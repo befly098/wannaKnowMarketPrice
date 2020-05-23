@@ -6,11 +6,13 @@ import requests
 import time
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+import sys
 
 # Function that scrap product information at "NAVER Shopping"
-def naver_shopping_crawling(browser):
+def naver_shopping_crawling(browser, market_data):
 
-    print "\n\n<Naver Crawling Result>\n\n"
+    site_title = "NAVER Shopping"
+
     browser.get("https://search.shopping.naver.com/search/all.nhn?query=%EB%8B%8C%ED%85%90%EB%8F%84+%EC%8A%A4%EC%9C%84%EC%B9%98")
 
     # [todo] add loading command
@@ -23,22 +25,22 @@ def naver_shopping_crawling(browser):
         # product price has two types of tag at NAVER Shopping
         # so, we have to check two tags
         try:
-            product_price = element.find_element_by_xpath("./span[@class='price']/em/span[@class='num _price_reload']").text.encode('utf-8')
+            product_price = element.find_element_by_xpath("./span[@class='price']/em/span[@class='num _price_reload']").text
         except:
-            product_price = element.find_element_by_xpath("./span[@class='price']/em/span[@class='num']").text.encode('utf-8')
-        product_title = element.find_element_by_xpath("./div[@class='tit']/a").text.encode('utf-8')
+            product_price = element.find_element_by_xpath("./span[@class='price']/em/span[@class='num']").text
+        product_title = element.find_element_by_xpath("./div[@class='tit']/a").text
 
-        print product_title
-        print product_price
-        print "-----------------------------------"
+        scrap_time = time.strftime('%Y-%m-%d %H:%M:%S')
+        market_data.append([site_title, product_title, product_price, scrap_time])
     
-    return
+    return market_data
 
 
 # Function that scrap product information at "TMON"
-def tmon_crawling(browser):
+def tmon_crawling(browser, market_data):
 
-    print "\n\n<TMON Crawling Result>\n\n"
+    site_title = "TMON"
+
     browser.get("https://search.tmon.co.kr/search/?keyword=%EB%8B%8C%ED%85%90%EB%8F%84%20%EC%8A%A4%EC%9C%84%EC%B9%98")
 
     # load new pages
@@ -53,15 +55,15 @@ def tmon_crawling(browser):
         product_price = element.find_element_by_xpath("./div[@class='price_area']/span[@class='price']/span[@class='sale']/i[@class='num']").text.encode('utf-8')
         product_title = element.find_element_by_xpath("./p[@class='title']/strong[@class='tx']").text.encode('utf-8')
 
-        print product_title
-        print product_price
-        print "-----------------------------------"
+        scrap_time = time.strftime('%Y-%m-%d %H:%M:%S')
+        market_data.append([site_title, product_title, product_price, scrap_time])
     
-    return
+    return market_data
 
-def auction_crawling(browser):
+def auction_crawling(browser, market_data):
 
-    print "\n\n<Auction Crawling Result>\n\n"
+    site_title = "Auction"
+
     browser.get("http://browse.auction.co.kr/search?keyword=%EB%8B%8C%ED%85%90%EB%8F%84+%EC%8A%A4%EC%9C%84%EC%B9%98")
 
     # load new pages
@@ -79,23 +81,33 @@ def auction_crawling(browser):
         
         product_price = element.find_element_by_xpath("./div[1]/div[@class='area--itemcard_price']/span[@class='price_seller']/strong[@class='text--price_seller']").text.encode('utf-8')
 
-        print product_title
-        print product_price
-        print "-----------------------------------"
+        scrap_time = time.strftime('%Y-%m-%d %H:%M:%S')
+        market_data.append([site_title, product_title, product_price, scrap_time])
     
-    return
+    return market_data
 
 if __name__ == '__main__':
+
+    # encoding proplem
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
     
     options = Options()
     options.headless = True
+    options.add_argument('lang=ko_KR')
 
     # we use Firefox for scrapping
     browser = webdriver.Firefox(options=options)
 
+    # database array
+    market_data = []
+
     # scrap information by site
-    naver_shopping_crawling(browser)
-    tmon_crawling(browser)
-    auction_crawling(browser)
+    market_data = naver_shopping_crawling(browser, market_data)
+    market_data = tmon_crawling(browser, market_data)
+    market_data = auction_crawling(browser, market_data)
+
+    for element in market_data:
+        print element[0] + "\t" + element[1] + "\t" + element[2] + "\t" + element[3]
 
     browser.quit()
