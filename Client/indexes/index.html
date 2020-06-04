@@ -11,7 +11,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    
     <title>?EolmaNi?</title>
     <style>
       @font-face { font-family: 'GmarketSansLight'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff'); font-weight: normal; font-style: normal; }
@@ -108,13 +107,18 @@
           <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
           <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
         </ol>
+        <script>
+          function moveMenu(){
+            location.href="RealTimePrice.html";
+          };
+        </script>
         <div class="carousel-inner">
           <div class="carousel-item active" >
             <img src="../img/Nintendo-playing.jpg" class="d-block w-100" alt="..."style="height:500px;" >
             <div class="carousel-caption d-none d-md-block">
               <h4 style = "font-weight:600;">휴대와 거치가 동시에 가능한 게임기!</h4>
-              <div class = "container-fluid" style="text-align: center;">
-                <div class = "shadow lg p-1 rounded"style="background-color:#f5aa14;width : 30%;height:fit-content;margin-left: 33%;">
+              <div class = "container-fluid" style="text-align: center;" onclick=moveMenu()>
+                <div  id = "FindingLowest" class = "shadow lg p-1 rounded"style="background-color:#f5aa14;width : 30%;height:fit-content;margin-left: 33%;">
                 <img src = "../img/search.svg"/>
                   <strong>최저가 알아보기</strong>
               </div>
@@ -125,8 +129,8 @@
             <img src="../img/Nintendo-closer.jpg" class="d-block w-100" alt="..."style="height:500px;">
             <div class="carousel-caption d-none d-md-block">
               <h4 style = "font-weight:600;">휴대와 거치가 동시에 가능한 게임기!</h4>
-              <div class = "container-fluid" style="text-align: center;">
-                <div class = "shadow lg p-1 rounded" style="background-color:#23b81c;width : 30%;height:fit-content;margin-left: 33%;">
+              <div class = "container-fluid" style="text-align: center;" onclick=moveMenu()>
+                <div  id = "FindingLowest" class = "shadow lg p-1 rounded" style="background-color:#23b81c;width : 30%;height:fit-content;margin-left: 33%;">
                 <img src = "../img/search.svg"/>
                   <strong>최저가 알아보기</strong>
               </div>
@@ -137,22 +141,14 @@
             <img src="../img/Nintendo-alone.jpg" class="d-block w-100" alt="..."style="height:500px;">
             <div class="carousel-caption d-none d-md-block">
               <h4 style = "font-weight:600;">휴대와 거치가 동시에 가능한 게임기!</h4>
-              <div class = "container-fluid" style="text-align: center;">
-                <div class = "shadow lg p-1 rounded" style="background-color:#3e51cf;width : 30%;height:fit-content;margin-left: 33%;">
+              <div id = "FindingLowest" class = "container-fluid" style="text-align: center;" onclick=moveMenu()>
+                <div  id = "FindingLowest"  class = "shadow lg p-1 rounded" style="background-color:#3e51cf;width : 30%;height:fit-content;margin-left: 33%;">
                 <img src = "../img/search.svg"/>
                   <strong>최저가 알아보기</strong>
               </div>
               </div>
             </div>
           </div>
-          <script>
-            $(document).ready(function(){
-                $(".shadow lg p-1 roudned").click(function(){
-                  location.href = 'RealTimePrice.html';
-                  $(".shadow lg p-1 roudned").css('cursor','pointer');
-                });
-            });
-              </script>
         </div>
 
         <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
@@ -166,6 +162,7 @@
 
       </div>
     </div>
+    <!--형광펜 이벤트 스크롤 이벤트로 변경!!-->
     <div class = "container"style="height:800px;">
       <div class = "container-fluid" style = "height:50px;"></div>
       <div class = "container-fluid"style = "text-align:center;font-size:35px;">
@@ -177,22 +174,24 @@
       <div class = "container-fluid"style = "text-align:center; font-size:30px;vertical-align:center;margin-top: 40px;margin-bottom:40px;">
         <strong><span style="color:#43db3d;">네이버?&nbsp;</span>
                         <span style = "color:#d96932;">티몬?</span></strong>
-       <span class = "underline--magical"> 실시간으로 한눈에</span> 보는 전자제품 시세!
+       <span id = "Underline1" class = "underline--magical"> 실시간으로 한눈에</span> 보는 전자제품 시세!
         <img src="../img/compare.png" style= "width: 13%;margin-left:60px;"/>
     </div>
     <div class = "container-fluid"style = "text-align:center; font-size:30px;vertical-align:center;margin-top: 40px;margin-bottom:40px;">
       <img src="../img/money.png" style= "width: 12%;margin-right:60px;"/>
       <strong><span style="color:red;">UP?&nbsp;</span>
                       <span style = "color:blue;">DOWN?</span></strong>
-      <span class = "underline--magical2">최저가를 찾아 헤매던 당신</span>에게 안성맞춤!
+      <span id ="Underline2" class = "underline--magical2">최저가를 찾아 헤매던 당신</span>에게 안성맞춤!
   </div>
   <div class = "container-fluid"style = "text-align:center; font-size:30px;vertical-align:center;margin-top: 40px;margin-bottom:40px;">
-    <span class="underline--magical3">시간과 돈,</span> 두마리 토끼를 동시에!
+    <span id = "Underline3" class="underline--magical3">시간과 돈,</span> 두마리 토끼를 동시에!
     <img src="../img/clock.png" style= "width: 10%;margin-left:60px;"/>
 
+    <script>
+    </script>
 </div>
       </div>
-    <footer class = "footer">
+    <footer class = "footer"style="z-index:10;">
       <div class = "container-fluid" style = "background-color: #a2a4b3; position: fixed;bottom:0;">
         <div class="row">
           <div class="col"style ="text-align:center;">
@@ -200,8 +199,11 @@
               <p style = "font-family: S-CoreDream-2ExtraLight;color:whitesmoke;">박서린<br/>
                         신준희</p>
           </div>
-          <div class="col"style ="text-align:center;color:whitesmoke;"">
-            개발자에게 이메일 기능
+          <div class="col"style ="text-align:center;color:whitesmoke;vertical-align:center;">
+              <button type = "button" class = "btn btn-primary" style="border-radius: 20px;margin-top:10px;" >
+                <img src = "../img/mail.png" style="width:22px;padding-bottom: 8px;"/>
+                개발자에게 문의하기
+              </button>
           </div>
           <div class="col"style ="text-align:center;color:whitesmoke;"">
              경북대학교 컴퓨터학부 웅앵

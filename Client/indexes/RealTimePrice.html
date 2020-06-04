@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.js"></script>
-    <title>MarketPrice</title>
+    <title>RealTim</title>
     <style>
       @font-face { font-family: 'GmarketSansLight'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff'); font-weight: normal; font-style: normal; }
       @font-face { font-family: 'S-CoreDream-3Light'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff'); font-weight: normal; font-style: normal; }
@@ -64,7 +64,7 @@
   <body style = "overflow-x:hidden;overflow-y: scroll;">
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">MarketPrice</a>
+        <a class="navbar-brand" href="#">Eolmani?!</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -75,10 +75,10 @@
               <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">실시간 가격 확인  <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="RealTimePrice.html">실시간 가격 확인  <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item ">
-              <a class="nav-link" href="#">시세 변동 현황 <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="PriceChange.html">시세 변동 현황 <span class="sr-only">(current)</span></a>
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -102,20 +102,22 @@
     </div>
     <!--그래프-->
     <div class = "container"style="margin-left:30%;">
+      <script>
+        //data 계산.
+      </script>
         <div>
             <img src = "../img/tmon.png" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "orange" data-val = '30%'style="display:inline-block;">Tmon</span>
                                                                                                                 <div style="display: inline-block;"id="TmonValue"></div>
                                                                                                                 <br/><!--여기에 최저가 넣고, 처음에 span 초기화 할때도 그거 비율계산해야 함-->
             <img src = "../img/navershopping.JPG" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "green" data-val = '20%'style="display:inline-block;">Naver shopping</span><br/>
-            <img src = "../img/tmon.png" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "pink" data-val = '10%'style="display:inline-block;">Pink mall</span><br/>
-            <img src = "../img/himart.png" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "red" data-val = '40%'style="display:inline-block;">Hi mart</span>
+            <img src = "../img/auction.png" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "red" data-val = '40%'style="display:inline-block;">Auction</span>
         </div>
         <script>
             d3.selectAll('span')
                 .datum(function(){
                     return this.dataset;
                 })
-                .style("width","30%")
+                .style("width","0")
                 .transition().duration(1500)
                 .style("width",d=>d.val)
         </script>
@@ -123,21 +125,25 @@
     <div class = "container-fluid" style = "height:20px;"></div>
     <!--현재 최저가 쇼핑하러 가기-->
     <div class = "container-fluid"style="margin-left:25%;font-size:25px;">
-        <strong>현재 최저가 : <LowestPrice style = "color:red;">645000</LowestPrice>&nbsp;원&nbsp;/&nbsp;</strong> <button ></button>
+      <script>//현재 최저가 ->str로 서버에서 받음</script>
+        <strong>현재 최저가 : <LowestPrice style = "color:red;">645000</LowestPrice>&nbsp;원&nbsp;/&nbsp;</strong> 
+        <button ></button>
         <script>
-            //for문으로 현재 최저가 짜는 알고리즘
         </script>
     </div>
-    <footer class = "footer">
+    <footer class = "footer"style="z-index:10;">
       <div class = "container-fluid" style = "background-color: #a2a4b3; position: fixed;bottom:0;">
         <div class="row">
           <div class="col"style ="text-align:center;">
-            <p style = "padding-top:5px;color:whitesmoke;"><strong>| Copyright |</strong></p>
+            <p style = "padding-top:5px;color:whitesmoke;"><strong>| Copyright | </strong></p>
               <p style = "font-family: S-CoreDream-2ExtraLight;color:whitesmoke;">박서린<br/>
                         신준희</p>
           </div>
-          <div class="col"style ="text-align:center;color:whitesmoke;"">
-            개발자에게 이메일 기능
+          <div class="col"style ="text-align:center;color:whitesmoke;vertical-align:center;">
+              <button type = "button" class = "btn btn-primary" style="border-radius: 20px;margin-top:10px;" >
+                <img src = "../img/mail.png" style="width:22px;padding-bottom: 8px;"/>
+                개발자에게 문의하기
+              </button>
           </div>
           <div class="col"style ="text-align:center;color:whitesmoke;"">
              경북대학교 컴퓨터학부 웅앵
@@ -145,6 +151,7 @@
         </div>
       </div>
     </footer>
+    
     
   </body>
 </html>
