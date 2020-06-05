@@ -12,7 +12,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.js"></script>
-    <title>RealTim</title>
+    <script>
+     $(document).ready( function () {
+  
+  $('[data-toggle="tooltip"]').tooltip();
+
+});
+    </script>
+    <title>RealTimePrice</title>
     <style>
       @font-face { font-family: 'GmarketSansLight'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff'); font-weight: normal; font-style: normal; }
       @font-face { font-family: 'S-CoreDream-3Light'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff'); font-weight: normal; font-style: normal; }
@@ -59,7 +66,6 @@
           border-radius: 15px;
       }
     </style>
-
   </head>
   <body style = "overflow-x:hidden;overflow-y: scroll;">
     <header>
@@ -94,7 +100,8 @@
     <!--제목-->
     <div class = "container">
     <div class = "container-fluid" style = "height:50px;"></div>
-    <div class ="container-fluid"style = "text-align:center;font-weight:600;font-size:33px;">
+    <div class ="container-fluid"style = "font-weight:600;font-size:33px;">
+      <img src = "../img/game-controller.png" style="width: 33px;"/>
         <strong>실시간 가격 확인</strong>
         <hr style="width: auto;"/>
     </div>
@@ -124,13 +131,83 @@
     </div>
     <div class = "container-fluid" style = "height:20px;"></div>
     <!--현재 최저가 쇼핑하러 가기-->
-    <div class = "container-fluid"style="margin-left:25%;font-size:25px;">
+    <div class = "container-fluid"style="font-size:25px;text-align:center;">
       <script>//현재 최저가 ->str로 서버에서 받음</script>
-        <strong>현재 최저가 : <LowestPrice style = "color:red;">645000</LowestPrice>&nbsp;원&nbsp;/&nbsp;</strong> 
-        <button ></button>
-        <script>
-        </script>
+        <strong>현재 최저가 : <LowestPrice style = "color:red;">645000</LowestPrice>&nbsp;원&nbsp;&nbsp;</strong> 
+        <img id = LowestShoppingmall src = "../img/navershopping.JPG"  class = "rounded"style="width:55px;"data-toggle = "tooltip" data-placement="bottom"title="최저가 쇼핑하러 가기"/>
     </div>
+    <div class = "container-fluid" style = "height:70px;"></div>
+
+    <div class = "container"style = "height:700px">
+    <div class ="container-fluid"style = "font-weight:600;font-size:33px;">
+      <img src = "../img/game-controller.png" style="width: 33px;"/>
+        <strong>오늘 하루 시세 변동</strong>
+        <hr style="width: auto;"/>
+    </div>
+
+    <div class="container">
+      <div class="row my-3">
+          <div class="col">
+              <h4>Bootstrap 4 Chart.js - Line Chart</h4>
+          </div>
+      </div>
+      <div class="row my-2">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-body">
+                      <canvas id="chLine" height="100"></canvas>
+                      <script>
+                        /* chart.js chart examples */
+                        var Chart = require('chart.js');
+
+// chart colors
+var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
+
+/* large line chart */
+var chLine = document.getElementById("chLine");
+var chartData = {
+  labels: ["S", "M", "T", "W", "T", "F", "S"],
+  datasets: [{
+    data: [589, 445, 483, 503, 689, 692, 634],
+    backgroundColor: 'transparent',
+    borderColor: colors[0],
+    borderWidth: 4,
+    pointBackgroundColor: colors[0]
+  },
+  {
+    data: [639, 465, 493, 478, 589, 632, 674],
+    backgroundColor: colors[3],
+    borderColor: colors[1],
+    borderWidth: 4,
+    pointBackgroundColor: colors[1]
+  }]
+};
+
+if (chLine) {
+  new Chart(chLine, {
+  type: 'line',
+  data: chartData,
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: false
+        }
+      }]
+    },
+    legend: {
+      display: false
+    }
+  }
+  });
+}
+                      </script>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
     <footer class = "footer"style="z-index:10;">
       <div class = "container-fluid" style = "background-color: #a2a4b3; position: fixed;bottom:0;">
         <div class="row">
