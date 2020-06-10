@@ -10,6 +10,27 @@ class Database():
                      password='admin',
                      db='test'
                      )
+        self.cursor = self.db.cursor(pymysql.cursors.DictCursor)
+
+    #쿼리 실행
+    def execute(self,query,args={}):
+        self.cursor.execute(query,args)
+
+    #tuple 하나만
+    def executeOne(self,query,args={}):
+        self.cursor.execute(query,args)
+        row = self.cursor.fetchone()
+        return row
+
+    #tuple 다
+    def executeAll(self,query,args={}):
+        self.cursor.execute(query,args)
+        row = self.cursor.fetchall()
+        return row
+
+    def commit():
+        self.db.commit()
+
 
     #이건 이미 마이스큐엘에 있으니까 실행할 필요 없을듯?
     #def makeTable(TableName):
@@ -72,7 +93,7 @@ def selectDataAsShop(TableName,ShopName):
     return AvgPrice
 
 
-try:
+#try:
     # table 생성 (한번만 실행)
 #    makeTable('Nintendo_TB')
 
@@ -86,11 +107,11 @@ try:
 #    selectData('Nintendo_TB')
 
     ###각 쇼핑몰마다 조회할 수 있도록
-    Nintendo_Naver = selectDataAsShop('Nintendo_TB','NAVER Shopping')
-    Nintendo_Tmon = selectDataAsShop('Nintendo_TB','TMON')
-    Nintendo_Auction = selectDataAsShop('Nintendo_TB','Auction')
+ #   Nintendo_Naver = selectDataAsShop('Nintendo_TB','NAVER Shopping')
+  #  Nintendo_Tmon = selectDataAsShop('Nintendo_TB','TMON')
+  #  Nintendo_Auction = selectDataAsShop('Nintendo_TB','Auction')
 
-except Exception as e:
-    print(e)
-finally:
-    db.close()
+#except Exception as e:
+ #   print(e)
+#finally:
+ #   db.close()
