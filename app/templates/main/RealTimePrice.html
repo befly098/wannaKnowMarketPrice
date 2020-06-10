@@ -108,18 +108,91 @@
     <div class = "container-fluid" style = "height:20px;"></div>
     </div>
     <!--그래프-->
-    <div class = "container"style="margin-left:30%;">
-      <script>
-        //data 계산.
-      </script>
+    <div class = "container"style="margin-left:20%;">
+
         <div>
-            <img src="{{url_for('static',filename='tmon.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "orange" data-val = '30%'style="display:inline-block;">Tmon</span>
-                                                                                                                <div style="display: inline-block;"id="TmonValue"></div>
+            <img src="{{url_for('static',filename='tmon.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
+                                                                                                                <span id="TmonValue" class = "orange" data-val = '1%'style="display:inline-block;">Tmon</span>
+                                                                                                                <div style="display: inline-block; font-size:25px;font-weight: bold;">{{resultTmon}}</div>
                                                                                                                 <br/><!--여기에 최저가 넣고, 처음에 span 초기화 할때도 그거 비율계산해야 함-->
-            <img src="{{url_for('static',filename='navershopping.jpg')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "green" data-val = '20%'style="display:inline-block;">Naver shopping</span><br/>
-            <img src="{{url_for('static',filename='auction.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/><span class = "red" data-val = '40%'style="display:inline-block;">Auction</span>
+            <img src="{{url_for('static',filename='navershopping.jpg')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
+                                                                                                                <span id = "NaverValue" class = "green" data-val = '111%'style="display:inline-block;">Naver shopping</span>
+                                                                                                                <div style="display: inline-block; font-size:25px;font-weight: bold;">{{resultNaver}}</div>
+                                                                                                                <br/>
+            <img src="{{url_for('static',filename='auction.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
+                                                                                                                <span id = "AuctionValue" class = "red" data-val = '100%'style="display:inline-block;">Auction</span>
+                                                                                                                <div style="display: inline-block; font-size:25px;font-weight: bold;">{{resultAuction}}</div>
+                                                                                                                <br/>
         </div>
+    </div>
+    <div class = "container-fluid" style = "height:20px;"></div>
+    <!--현재 최저가 쇼핑하러 가기-->
+    <div class = "container-fluid"style="font-size:25px;text-align:center;">
+      <script>//현재 최저가 ->str로 서버에서 받음</script>
+        <strong><p style = "display: inline-block;">현재 최저가 : </p> <p id = "LowestPrice" style = "color:red;display:inline-block;">645000</p>&nbsp;원&nbsp;&nbsp;</strong> 
+        <img id = LowestShoppingmall src="{{url_for('static',filename='navershopping.jpg')}}" class = "rounded"style="width:55px;display:inline-block;"data-toggle = "tooltip" data-placement="bottom"title="최저가 쇼핑하러 가기"/>
         <script>
+          /*
+          DB -> graph data 계산.
+          */
+          //무작정 데이터만 넣으면 백분율 기반으로 한그래프 상에서 미관상 좋지 않아서 0~100 사이의 값으로 오도록 메핑.
+          var graph_tmon = document.getElementById('TmonValue');
+          var graph_naver = document.getElementById('NaverValue');
+          var graph_auction = document.getElementById('AuctionValue');
+
+          var avg_tmon_origin = '{{resultTmon}}';
+          var avg_tmon = '{{resultTmon}}' /2000+ '%';
+          graph_tmon.setAttribute('data-val',avg_tmon);
+          console.log('tmon data ㄱㅖ싼'+avg_tmon);
+          
+          var avg_naver_origin = '{{resultNaver}}';
+          var avg_naver = '{{resultNaver}}' /2000+ '%';
+          graph_naver.setAttribute('data-val',avg_naver);
+          console.log('naver data ㄱㅖ싼'+avg_naver);
+
+          var avg_auction_origin = '{{resultAuction}}';
+          var avg_auction = '{{resultAuction}}' /2000+ '%';
+          graph_auction.setAttribute('data-val',avg_auction);
+          console.log('auction data ㄱㅖ싼'+avg_auction);
+
+          var LowestShoppingmall = document.getElementById('LowestShoppingmall');
+          var LowestPrice = document.getElementById('LowestPrice');
+          //최저가 구하기
+         if(avg_tmon>=avg_naver)
+        {
+          if(avg_naver>=avg_auction)
+          {
+            //auction
+            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='auction.png')}}");
+            LowestPrice.innerText=avg_auction_origin;
+          }
+          else
+          {
+            //naver
+            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='navershopping.JPG')}}");
+            LowestPrice.innerText=avg_naver_origin;
+          }
+        }
+        else
+        {
+          if(avg_tmon>=avg_auction)
+          {
+            //auction
+            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='auction.png')}}");
+            LowestPrice.innerText=avg_auction_origin;
+          }
+          else
+          {
+            //tmon
+            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='tmon.png')}}");
+            LowestPrice.innerText=avg_tmon_origin;
+          }
+        }
+
+
+        </script>
+        <script>
+          //그래프 렌더링
             d3.selectAll('span')
                 .datum(function(){
                     return this.dataset;
@@ -128,13 +201,14 @@
                 .transition().duration(1500)
                 .style("width",d=>d.val)
         </script>
-    </div>
-    <div class = "container-fluid" style = "height:20px;"></div>
-    <!--현재 최저가 쇼핑하러 가기-->
-    <div class = "container-fluid"style="font-size:25px;text-align:center;">
-      <script>//현재 최저가 ->str로 서버에서 받음</script>
-        <strong>현재 최저가 : <LowestPrice style = "color:red;">645000</LowestPrice>&nbsp;원&nbsp;&nbsp;</strong> 
-        <img id = LowestShoppingmall src="{{url_for('static',filename='navershopping.jpg')}}" class = "rounded"style="width:55px;"data-toggle = "tooltip" data-placement="bottom"title="최저가 쇼핑하러 가기"/>
+    
+    
+      </div>
+    <div class = "container-fluid" style = "height:50px;"></div>
+    <div class ="container"style = "font-weight:600;font-size:33px;">
+      <img src="{{url_for('static',filename='game-controller.png')}}" style="width: 33px;"/>
+        <strong>오늘 하루 시세 변동</strong>
+        <hr style="width: auto;"/>
     </div>
     <div class = "container-fluid" style = "height:70px;"></div>
     <footer class = "footer"style="z-index:10;">

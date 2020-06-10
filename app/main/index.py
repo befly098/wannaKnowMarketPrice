@@ -9,18 +9,16 @@ main= Blueprint('main', __name__, url_prefix='/')
 @main.route('/',methods = ['GET'])
 @main.route('/main',methods=['GET'])
 def index():
-    db_class = dbModule.Database()
-    sql = "select price,shop\
-               from nintendo_tb\
-                where price = '14,900'"
-    row = db_class.executeAll(sql)
-    print(row)
-    return render_template('/main/index.html',
-                                         resultData = row[0])
+    return render_template('/main/index.html')
 
 @main.route("/RealTimePrice",methods = ['GET'])
 def RealTimePrice():
-    return render_template('/main/RealTimePrice.html')
+    db_class = dbModule.Database()
+    #평균값. 
+    avg_tmon = db_class.selectDataAsShop('Nintendo_TB','TMON')
+    avg_naver = db_class.selectDataAsShop('Nintendo_TB','NAVER Shopping')
+    avg_auction = db_class.selectDataAsShop('Nintendo_TB','Auction')
+    return render_template('/main/RealTimePrice.html',resultTmon = avg_tmon,resultNaver = avg_naver,resultAuction = avg_auction)
 
 @main.route("/PriceChange",methods = ['GET'])
 def PriceChange():
