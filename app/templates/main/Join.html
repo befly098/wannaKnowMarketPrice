@@ -12,7 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
     <script>
      $(document).ready( function () {
   
@@ -89,52 +88,16 @@
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
+            <!--drawer 기능 고민...
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            -->
           </form>
         </div>
       </nav>
-<script>
-      $(document).ready(function(){
-
-        $('#exampleModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) 
-    var recipient = button.data('whatever')
-    var modal = $(this)
-    modal.find('.modal-title').text('개발자에게 문의하기');
-    modal.find('.modal-body input').val(recipient)
-  })
-  $('#send').click(function(){
-    var text = $('#message-text').val()
-    $('#mailhyperlink').attr('href',"mailto:jhshin0028@gmail.com?subject=complain&body="+text)
-  });
-      })
-</script>
     </header>
     <!--스팈키-->
     <!--제목-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="message-text" class="col-form-label">문의 사항:</label>
-                <textarea class="form-control" id="message-text"></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <a id = "mailhyperlink" href ="mailto:jhshin0028@gmail.com?subject=complain&body=냐냐"> <button id = "send" type="button" class="btn btn-primary">전송</button></a>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class = "container">
     <div class = "container-fluid" style = "height:50px;"></div>
     <div class ="container-fluid"style = "font-weight:600;font-size:33px;">
@@ -178,21 +141,18 @@
           var graph_auction = document.getElementById('AuctionValue');
           var link_shoppingmall = document.getElementById('LowestShoppingmallLink');
 
-          var total = '{{resultTmon}}'*1+ '{{resultNaver}}'*1+ '{{resultAuction}}'*1;
-          console.log(total);
-
           var avg_tmon_origin = '{{resultTmon}}';
-          var avg_tmon = '{{resultTmon}}'*1 /total * 100+ '%';
+          var avg_tmon = '{{resultTmon}}' /2000+ '%';
           graph_tmon.setAttribute('data-val',avg_tmon);
           console.log('tmon data ㄱㅖ싼'+avg_tmon);
           
           var avg_naver_origin = '{{resultNaver}}';
-          var avg_naver = '{{resultNaver}}'*1 /total*100+ '%';
+          var avg_naver = '{{resultNaver}}' /2000+ '%';
           graph_naver.setAttribute('data-val',avg_naver);
           console.log('naver data ㄱㅖ싼'+avg_naver);
 
           var avg_auction_origin = '{{resultAuction}}';
-          var avg_auction = '{{resultAuction}}'*1 /total*100+ '%';
+          var avg_auction = '{{resultAuction}}' /2000+ '%';
           graph_auction.setAttribute('data-val',avg_auction);
           console.log('auction data ㄱㅖ싼'+avg_auction);
 
@@ -250,73 +210,10 @@
     
       </div>
     <div class = "container-fluid" style = "height:50px;"></div>
-    <div class ="container"style = "font-weight:600;font-size:33px;height:500px;">
+    <div class ="container"style = "font-weight:600;font-size:33px;">
       <img src="{{url_for('static',filename='game-controller.png')}}" style="width: 33px;"/>
         <strong>오늘 하루 시세 변동</strong>
         <hr style="width: auto;"/>
-        <canvas id="myChart" height="100"></canvas>
-        <script>
-
-        //~현재
-        var now = new Date().getHours();
-        function getTimeArr(){
-          arr = new Array();
-          for(var i = 0;i<24;i++)
-            arr.push(i+'~'+(i*1+1));
-        return arr;
-      }
-      var ctx = document.getElementById("myChart");
-      var myChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-          labels:getTimeArr(),
-        datasets: [{
-            label: 'Auction',
-            data:[420000,300000,400000,500000],
-            backgroundColor: [
-                'rgba(255, 9, 13, 0.2)',
-            ],
-            borderColor: [
-                'rgba(255, 9, 13, 1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'Naver shopping',
-            data:[420000,300000,400000,500000],
-            backgroundColor: [
-                'rgba(67, 219, 61, 0.2)',
-            ],
-            borderColor: [
-                'rgba(67, 219, 61, 1)',
-            ],
-            borderWidth: 1
-        },
-                {
-            label: 'Tmon',
-            data:[420000,300000,400000,500000],
-            backgroundColor: [
-                'rgb(217, 105, 50,0.2)',
-            ],
-            borderColor: [
-                'rgb(217, 105, 50,1)',
-            ],
-            borderWidth: 1
-        }
-        ]
-    },
-    options: {
-      yAxes: [{
-                ticks: {
-                  beginAtZero: true
-                }
-            }]
-    }
-});
-      </script>
-
-
-
     </div>
     <div class = "container-fluid" style = "height:70px;"></div>
     <footer class = "footer"style="z-index:10;">
@@ -328,8 +225,8 @@
                         신준희</p>
           </div>
           <div class="col"style ="text-align:center;color:whitesmoke;vertical-align:center;">
-            <button type = "button" class = "btn btn-primary" data-toggle="modal" data-target="#exampleModal"data-whatever="abcdxx@gmail.com" style="border-radius: 20px;margin-top:10px;" >
-              <img src="{{url_for('static',filename='mail.png')}}"style="width:22px;padding-bottom: 8px;"/>
+              <button type = "button" class = "btn btn-primary" style="border-radius: 20px;margin-top:10px;" >
+                <img src="{{url_for('static',filename='mail.png')}}"style="width:22px;padding-bottom: 8px;"/>
                 개발자에게 문의하기
               </button>
           </div>

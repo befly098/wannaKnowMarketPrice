@@ -36,9 +36,48 @@
       }
 
     </style>
+    <script>
+      $(document).ready(function(){
 
+        $('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) 
+    var recipient = button.data('whatever')
+    var modal = $(this)
+    modal.find('.modal-title').text('개발자에게 문의하기');
+    modal.find('.modal-body input').val(recipient)
+  })
+  $('#send').click(function(){
+    var text = $('#message-text').val()
+    $('#mailhyperlink').attr('href',"mailto:jhshin0028@gmail.com?subject=complain&body="+tex)
+  });
+      })
+</script>
   </head>
   <body style = "overflow-x:hidden;overflow-y: scroll; position:relative;">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">문의 사항:</label>
+                <textarea class="form-control" id="message-text"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <a id = "mailhyperlink" href ="mailto:jhshin0028@gmail.com?subject=complain&body=냐냐"> <button id = "send" type="button" class="btn btn-primary">전송</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="../">Eolmani?!</a>
@@ -59,73 +98,233 @@
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
-            <!--drawer 기능 고민...
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            -->
           </form>
         </div>
       </nav>
     </header>
- 
-    <div class = "container">
+    <nav class="nav nav-justified"id ="sticky-bar"style="margin-top:33px;">
+      <a class="nav-item nav-link active" href="#a" style="color: red;">Auction</a>
+      <a class="nav-item nav-link" href="#b" style="color: rgb(42, 226, 17);">Naver shopping</a>
+      <a class="nav-item nav-link" href="#c" style="color: rgb(235, 114, 33);">Tmon</a>
+    </nav>
     <div class = "container-fluid" style = "height:50px;"></div>
-    <div class = "container"style = "height:1000px;">
+    <div class = "container"style = "height:2200px;"data-spy="scroll"data-target="#sticky-bar">
       <div class ="container-fluid"style = "font-weight:600;font-size:33px;">
         <img src="{{url_for('static',filename='game-controller.png')}}" style="width: 33px;"/>
           <strong>일주일 간 시세 변동</strong>
           <hr style="width: auto;"/>
       </div>
-      <div class = "container" style="height:400px;width:80%;">
-        <canvas id="auctionChart"  height="100px"></canvas>
-        <canvas id="naverChart"  height="100px"></canvas>
-        <canvas id="tmonChart"  height="100px"></canvas>
+        <canvas id="myChart" height="100"></canvas>
         <script>
-          var ctx = document.getElementById("auctionChart");
+          //auction, naver, tmon
+          console.log('{{resultTmon[2]}}');
+          console.log('{{resultTmon}}');
+          var today = new Date();
+          var date_today = today.getDate();
+          var month_today = today.getMonth();
+          month_today*=1;
+          month_today+=1;
+          var ctx = document.getElementById('myChart');
+
+          //어제~일주일 전
+            function getDateArray(date,month){
+            var arr = new Array();
+            var flag = 1;
+           date *=1;
+           //오늘 날짜 보관
+           var date_yesterday = date;
+           var flag = 1;
+          
+          for(var i=0;i<7;i++)
+           {
+             var cur_date= date_yesterday - (i+1);
+             if(cur_date<1)
+             {
+               cur_date = 30- (i);
+               if(flag)
+               {
+                 month -=1;
+                 flag = 0;
+               }
+             }
+              arr[6-i] = String(month) + '/' + String(cur_date)
+ 
+            }
+            return arr;
+          }
+          var data_arr =  getDateArray(date_today,month_today);
+          auction_data = new Array();          
+          naver_data = new Array();          
+          tmon_data = new Array();          
+          for(var i =0;i<7;i++)
+          {
+            auction_data.push('{{resultAuction[i]}}');
+            naver_data.push('{{resultNaver[i]}}');
+            tmon_data.push('{{resultTmon[i]}}');
+          }
           var myChart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                  labels: ["5/7", "5/8", "5/9","5/10","5/11","5/12","5/13"],
-                  datasets: [
-                    {
-                      label: 'Auction',
-                      data: [400000, 500000, 450000,600000,550000,450000,380000]
-                  }]
-              },
-              backgroundColor: ['rgba(255, 99, 132, 0.2)']
-          });
-    </script>
-            <script>
-              var ctx = document.getElementById("naverChart");
-              var myChart = new Chart(ctx, {
-                  type: 'line',
-                  data: {
-                      labels: ["5/7", "5/8", "5/9","5/10","5/11","5/12","5/13"],
-                      datasets: [
-                        {
-                          label: 'Naver shopping',
-                          data: [400000, 500000, 450000,600000,550000,450000,380000]
-                      }]
-                  },
-                  backgroundColor:['rgba(75, 192, 192, 0.2)']
-              });
-        </script>
-                <script>
-                  var ctx = document.getElementById("tmonChart");
-                  var myChart = new Chart(ctx, {
-                      type: 'line',
-                      data: {
-                          labels: ["5/7", "5/8", "5/9","5/10","5/11","5/12","5/13"],
-                          datasets: [
-                            {
-                              label: 'Tmon',
-                              data: [400000, 500000, 450000,600000,550000,450000,380000]
-                          }]
-                      },
-                      backgroundColor: ['rgba(255, 159, 64, 0.2)']
-                  });
-            </script>
-      </div>
+          type: 'line',
+          data: {
+          labels: data_arr,
+        datasets: [{
+            label: 'Auction',
+            data:  [400512, 456545, 431233, 554545, 212121, 313131],
+
+            backgroundColor: [
+                'rgba(255, 9, 13, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 9, 13, 1)',
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Naver shopping',
+            data:   [400512, 456545, 431233, 554545, 212121, 313131],
+            backgroundColor: [
+                'rgba(67, 219, 61, 0.2)',
+            ],
+            borderColor: [
+                'rgba(67, 219, 61, 1)',
+            ],
+            borderWidth: 1
+        },
+                {
+            label: 'Tmon',
+            data:   [400512, 456545, 431233, 554545, 212121, 313131],
+            backgroundColor: [
+                'rgb(217, 105, 50,0.2)',
+            ],
+            borderColor: [
+                'rgb(217, 105, 50,1)',
+            ],
+            borderWidth: 1
+        }
+        ]
+    },
+    options: {
+      yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+            }]
+    }
+});
+      </script>
+
+<div id = "a"class ="container-fluid"style = "font-weight:600;font-size:33px;margin-top:83px;">
+  <img src="{{url_for('static',filename='game-controller.png')}}" style="width: 33px;"/>
+    <strong>일주일간 시세 변화 - Auction</strong>
+    <hr style="width: auto;"/>
+    <canvas id="myAuctionChart" height="100"></canvas>
+
+</div>
+<div id = "b"class ="container-fluid"style = "font-weight:600;font-size:33px;margin-top:83px;">
+  <img src="{{url_for('static',filename='game-controller.png')}}" style="width: 33px;"/>
+    <strong>일주일간 시세 변화 - Naver shopping</strong>
+    <hr style="width: auto;"/>
+    <canvas id="myNaverChart" height="100"></canvas>
+</div>
+<div id = "c"class ="container-fluid"style = "font-weight:600;font-size:33px;margin-top:83px">
+  <img src="{{url_for('static',filename='game-controller.png')}}" style="width: 33px;"/>
+    <strong>일주일간 시세 변화 - Tmon</strong>
+    <hr style="width: auto;"/>
+    <canvas id="myTmonChart" height="100"></canvas>
+    <script>
+      //auction
+      var today = new Date();
+      var date_today = today.getDate();
+      var month_today = today.getMonth();
+      var ctx = document.getElementById('myAuctionChart');
+
+      //auction
+      var myChart_auction = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data_arr,
+             datasets: [{
+        label: 'Auction',
+        data: [400512, 456545, 431233, 554545, 212121, 313131],
+        backgroundColor: [
+            'rgba(255, 9, 13, 0.2)',
+        ],
+        borderColor: [
+            'rgba(255, 9, 13, 1)',
+        ],
+        borderWidth: 1
+    }
+    ]
+},
+options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+}
+});
+      // naver
+
+       ctx = document.getElementById('myNaverChart');
+
+      var myChart_naver= new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data_arr,
+        datasets: [{
+        label: 'Naver shopping',
+        data: [400512, 456545, 431233, 554545, 212121, 313131],
+        backgroundColor: [
+        'rgba(67, 219, 61, 0.2)',],
+        borderColor: [
+        'rgba(67, 219, 61, 1.0)',],
+        borderWidth: 1
+    }
+    ]
+},
+options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+}
+});
+      // tmon
+
+       ctx = document.getElementById('myTmonChart');
+
+      var myChart_tmon = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data_arr,    
+        datasets: [{
+        label: 'Tmon',
+        data: [400512, 456545, 431233, 554545, 212121, 313131],
+        backgroundColor: [
+        'rgb(217, 105, 50,0.2)',       ],
+        borderColor: [
+        'rgb(217, 105, 50,1.0)',        ],
+        borderWidth: 1
+    }
+    ]
+},
+options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+}
+});
+</script>
+</div>
     </div>
     </div>
        <footer class = "footer"style="z-index:10;">
@@ -137,13 +336,13 @@
                       신준희</p>
         </div>
         <div class="col"style ="text-align:center;color:whitesmoke;vertical-align:center;">
-            <button type = "button" class = "btn btn-primary" style="border-radius: 20px;margin-top:10px;" >
+            <button type = "button" class = "btn btn-primary" data-toggle="modal" data-target="#exampleModal"data-whatever="abcdxx@gmail.com" style="border-radius: 20px;margin-top:10px;" >
               <img src="{{url_for('static',filename='mail.png')}}" style="width:22px;padding-bottom: 8px;"/>
               개발자에게 문의하기
             </button>
         </div>
-        <div class="col"style ="text-align:center;color:whitesmoke;"">
-           경북대학교 컴퓨터학부 웅앵
+        <div class="col"style ="text-align:center;color:whitesmoke;">
+           <p>경북대학교 컴퓨터학부</p>
         </div>
       </div>
     </div>
