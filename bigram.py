@@ -157,7 +157,7 @@ def make_bigram_table(market_data):
                     word_table[first_word][second_word] = 0
 
                 word_table[first_word][second_word] += freq
-                word_sum_table[first_word] += 1
+                word_sum_table[first_word] += freq
 
             first_word = temp_text[-1]
             second_word = "_eos"
