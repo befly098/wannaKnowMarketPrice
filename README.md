@@ -49,13 +49,7 @@
         * 일간 시세 그래프, 주간 시세 그래프, 메인 페이지 포함 
         * 관련 폴더: /wannaKnowMarketPrice/app/templates/main/
   <br/>
-  
-* 프로젝트 사용 방법 <br/>
-     * 웹페이지 접속 방법<br/>
-        http://3.135.191.2:8700/ 접속<br/>
-     * 웹 서버 실행 방법<br/>
-        1)3.135.191.2에 server_key.pem을 사용해 접속<br/>
-        2) ```python3 run.py```<br/>
+
 * 실행 화면
   * 메인 페이지<br/>
     ![메인](https://user-images.githubusercontent.com/44567793/86323731-51a3ad00-bc78-11ea-99c2-3a07e015fce3.png)
