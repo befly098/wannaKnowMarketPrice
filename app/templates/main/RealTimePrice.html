@@ -67,6 +67,9 @@
           border-radius: 15px;
       }
     </style>
+    <link rel="icon" 
+    type="image/png" 
+    href="../static/money.png">
   </head>
   <body style = "overflow-x:hidden;overflow-y: scroll;">
     <header>
@@ -149,16 +152,20 @@
 
         <div>
             <img src="{{url_for('static',filename='tmon.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
-            <span id="TmonValue" class = "orange" data-val = '1%'style="display:inline-block;">Tmon</span>
-            <div style="display: inline-block; font-size:25px;font-weight: bold;">{{resultTmon}}</div>
+            <span id="TmonValue" class = "orange" data-val = '2%'style="font-size:15px;display:inline-block;">Tmon</span>
+            <div style="display: inline-block; font-size:12px;font-weight: bold;">{{resultTmon}}</div>
             <br/><!--여기에 최저가 넣고, 처음에 span 초기화 할때도 그거 비율계산해야 함-->
-            <img src="{{url_for('static',filename='navershopping.jpg')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
-            <span id = "NaverValue" class = "green" data-val = '111%'style="display:inline-block;">Naver shopping</span>
-            <div style="display: inline-block; font-size:25px;font-weight: bold;">{{resultNaver}}</div>
+            <img src="{{url_for('static',filename='ssg.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
+            <span id = "NaverValue" class = "green" data-val = '2%'style="font-size:15px;display:inline-block;">SSG</span>
+            <div style="display: inline-block; font-size:12px;font-weight: bold;">{{resultNaver}}</div>
              <br/>
             <img src="{{url_for('static',filename='auction.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
-             <span id = "AuctionValue" class = "red" data-val = '100%'style="display:inline-block;">Auction</span>
-             <div style="display: inline-block; font-size:25px;font-weight: bold;">{{resultAuction}}</div>
+             <span id = "AuctionValue" class = "red" data-val = '2%'style="font-size:15px;display:inline-block;">Auction</span>
+             <div style="display: inline-block; font-size:12px;font-weight: bold;">{{resultAuction}}</div>
+             <br/>
+             <img src="{{url_for('static',filename='interpark.png')}}" class = "rounded-circle" style="width: 40px;padding-bottom: 4px;margin-right: 10px;"/>
+             <span id = "InterparkValue" class = "purple" data-val = '2%'style="font-size:15px;display:inline-block;">Interpark</span>
+             <div style="display: inline-block; font-size:12px;font-weight: bold;">{{resultInterpark}}</div>
              <br/>
         </div>
     </div>
@@ -167,7 +174,7 @@
     <div class = "container-fluid"style="font-size:25px;text-align:center;">
       <script>//현재 최저가 ->str로 서버에서 받음</script>
         <strong><p style = "display: inline-block;">현재 최저가 : </p> <p id = "LowestPrice" style = "color:red;display:inline-block;">645000</p>&nbsp;원&nbsp;&nbsp;</strong> 
-        <a id = "LowestShoppingmallLink" href = "www.naver.com"><img id = LowestShoppingmall src="{{url_for('static',filename='navershopping.jpg')}}" class = "rounded"style="width:55px;display:inline-block;"data-toggle = "tooltip" data-placement="bottom"title="최저가 쇼핑하러 가기"/></a>
+        <a id = "LowestShoppingmallLink" href = "www.naver.com"><img id = LowestShoppingmall src="{{url_for('static',filename='ssg.png')}}" class = "rounded"style="width:55px;display:inline-block;"data-toggle = "tooltip" data-placement="bottom"title="최저가 쇼핑하러 가기"/></a>
         <script>
           /*
           DB -> graph data 계산.
@@ -176,64 +183,86 @@
           var graph_tmon = document.getElementById('TmonValue');
           var graph_naver = document.getElementById('NaverValue');
           var graph_auction = document.getElementById('AuctionValue');
+          var graph_interpark = document.getElementById('InterparkValue');
           var link_shoppingmall = document.getElementById('LowestShoppingmallLink');
 
-          var total = '{{resultTmon}}'*1+ '{{resultNaver}}'*1+ '{{resultAuction}}'*1;
+          var total = '{{resultTmon}}'*1+ '{{resultNaver}}'*1+ '{{resultAuction}}'*1+'{{resultInterpark}}'*1;
           console.log(total);
 
-          var avg_tmon_origin = '{{resultTmon}}';
+          var avg_tmon_origin = '{{resultTmon}}'*1;
           var avg_tmon = '{{resultTmon}}'*1 /total * 100+ '%';
           graph_tmon.setAttribute('data-val',avg_tmon);
           console.log('tmon data ㄱㅖ싼'+avg_tmon);
           
-          var avg_naver_origin = '{{resultNaver}}';
+          var avg_naver_origin = '{{resultNaver}}'*1;
           var avg_naver = '{{resultNaver}}'*1 /total*100+ '%';
           graph_naver.setAttribute('data-val',avg_naver);
           console.log('naver data ㄱㅖ싼'+avg_naver);
 
-          var avg_auction_origin = '{{resultAuction}}';
+          var avg_auction_origin = '{{resultAuction}}'*1;
           var avg_auction = '{{resultAuction}}'*1 /total*100+ '%';
           graph_auction.setAttribute('data-val',avg_auction);
           console.log('auction data ㄱㅖ싼'+avg_auction);
 
+          var avg_interpark_origin = '{{resultInterpark}}'*1;
+          var avg_interpark = '{{resultInterpark}}'*1 /total*100+ '%';
+          graph_auction.setAttribute('data-val',avg_interpark);
+          console.log('interpark data ㄱㅖ싼'+avg_interpark);
+
           var LowestShoppingmall = document.getElementById('LowestShoppingmall');
           var LowestPrice = document.getElementById('LowestPrice');
           //최저가 구하기
-         if(avg_tmon>=avg_naver)
-        {
-          if(avg_naver>=avg_auction)
-          {
-            //auction
-            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='auction.png')}}");
-            LowestPrice.innerText=avg_auction_origin;
-            link_shoppingmall.setAttribute('href','http://www.auction.co.kr/');
-          }
-          else
-          {
-            //naver
-            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='navershopping.JPG')}}");
-            LowestPrice.innerText=avg_naver_origin;
-            link_shoppingmall.setAttribute('href','https://shopping.naver.com/');
-          }
-        }
-        else
-        {
-          if(avg_tmon>=avg_auction)
-          {
-            //auction
-            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='auction.png')}}");
-            LowestPrice.innerText=avg_auction_origin;
-            link_shoppingmall.setAttribute('href','http://www.auction.co.kr/');
-          }
-          else
-          {
-            //tmon
-            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='tmon.png')}}");
-            LowestPrice.innerText=avg_tmon_origin;
-            link_shoppingmall.setAttribute('href','http://www.tmon.co.kr/');
-          }
-        }
+          var Sorting = new Array();
+          Sorting= [avg_tmon_origin,avg_auction_origin,avg_interpark_origin,avg_naver_origin];
 
+          // 버블 정렬
+          var i,j,temp;
+
+          for(i=3; i>0; i--){
+          // 0 ~ (i-1)까지 반복
+          for(j=0; j<i; j++){
+           // j번째와 j+1번째의 요소가 크기 순이 아니면 교환
+            if(Sorting[j]<Sorting[j+1]){
+              temp = Sorting[j];
+              Sorting[j] = Sorting[j+1];
+              Sorting[j+1] = temp;
+      }
+    }
+  }
+        
+        switch(Sorting[3])
+        {
+          //ssg
+          case(avg_naver_origin): 
+            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='ssg.png')}}");
+            LowestPrice.innerText=avg_naver_origin;
+            link_shoppingmall.setAttribute('href','http://ssg.com/');
+            break;
+
+            //tmon
+            case(avg_tmon_origin): 
+              LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='tmon.png')}}");
+              LowestPrice.innerText=avg_tmon_origin;
+              link_shoppingmall.setAttribute('href','http://www.tmon.co.kr/');
+              break;
+
+            //auction
+            case (avg_auction_origin):
+            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='auction.png')}}");
+            LowestPrice.innerText=avg_auction_origin;
+            link_shoppingmall.setAttribute('href','http://www.auction.co.kr/');
+            break;
+
+            //interpark
+          default:
+            LowestShoppingmall.setAttribute('src',"{{url_for('static',filename='interpark.png')}}");
+            LowestPrice.innerText=avg_interpark_origin;
+            link_shoppingmall.setAttribute('href','http://www.interpark.com/');
+            break;
+
+
+
+        }
 
         </script>
         <script>
@@ -265,6 +294,30 @@
             arr.push(i+'~'+(i*1+1));
         return arr;
       }
+
+      function getDataArr(str){
+        
+        var strSplit = str.split(',');
+        var DataArr = new Array();
+
+        for (var i in strSplit){
+          var res;
+
+              if(i==0)
+              {
+                res = strSplit[i].split('[');
+                strSplit[i]= res[1];
+              }
+              else if (i ==(strSplit.length-1))
+              {
+                res = strSplit[i].split(']');
+                strSplit[i]= res[0];
+              }
+              DataArr.push(strSplit[i]*1);
+    
+        }
+        return DataArr
+      }
       var ctx = document.getElementById("myChart");
       var myChart = new Chart(ctx, {
           type: 'line',
@@ -272,7 +325,7 @@
           labels:getTimeArr(),
         datasets: [{
             label: 'Auction',
-            data:[420000,300000,400000,500000],
+            data:getDataArr('{{resultAuction_day}}'),
             backgroundColor: [
                 'rgba(255, 9, 13, 0.2)',
             ],
@@ -283,7 +336,7 @@
         },
         {
             label: 'Naver shopping',
-            data:[420000,300000,400000,500000],
+            data: getDataArr('{{resultNaver_day}}'),
             backgroundColor: [
                 'rgba(67, 219, 61, 0.2)',
             ],
@@ -292,9 +345,9 @@
             ],
             borderWidth: 1
         },
-                {
+        {
             label: 'Tmon',
-            data:[420000,300000,400000,500000],
+            data:getDataArr('{{resultTmon_day}}'),
             backgroundColor: [
                 'rgb(217, 105, 50,0.2)',
             ],
@@ -302,13 +355,28 @@
                 'rgb(217, 105, 50,1)',
             ],
             borderWidth: 1
+        },
+        {
+            label: 'Interpark',
+            data:getDataArr('{{resultInterpark_day}}'),
+            backgroundColor: [
+            'rgb(191, 63, 127,0.2)',
+            ],
+            borderColor: [
+            'rgb(191, 63, 127,1)',
+            ],
+            borderWidth: 1
         }
         ]
     },
     options: {
+      tooltips: {
+        yAlign: 'bottom'
+        },
       yAxes: [{
                 ticks: {
-                  beginAtZero: true
+                  beginAtZero: true,
+                  stepSize:20000
                 }
             }]
     }
