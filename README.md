@@ -24,7 +24,6 @@
       * MySQL DB 구축 
         * MySQL DB 사용
         * 쇼핑몰 이름, 제품 이름, 제품 가격, 크롤링 시간 업데이트
-        * /wannaKnowMarketPrice/crawl.py
  
   2. 프론트 엔드<br/>
   
