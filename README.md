@@ -19,9 +19,7 @@
         * Python2.7, Bi-gram 기법 사용
         * Bi-gram 기법은 제품의 관련도를 측정함
         * 가격이 평균보다 낮은 제품의 데이터 삭제
-        * 관련 파일: /wannaKnowMarketPrice/run.py, 
-                  /wannaKnowMarketPrice/app/__init__.py, 
-                  /wannaKnowMarketPrice/app/main/index.py
+        * 관련 파일: /wannaKnowMarketPrice/bi-gram.py
                 
       * MySQL DB 구축 
         * MySQL DB 사용
