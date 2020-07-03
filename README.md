@@ -40,7 +40,7 @@
 	      * Python3 MySQL 관련 package 사용
 	      * MySQL DB와 웹서버 연결
 	      * MySQL 데이터 웹페이지 적용
-        * 관련 파일: /wannaKnowMarketPrice/app/module/dbModule.py
+              * 관련 파일: /wannaKnowMarketPrice/app/module/dbModule.py
 	
      * 웹 UI 제작: 
         * BootStrap을 사용한 웹 페이지 제작
