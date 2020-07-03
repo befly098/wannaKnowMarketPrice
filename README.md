@@ -1,6 +1,10 @@
 # Eolmani?!(얼마니?!) 닷컴
 동일한 상품(닌텐도 스위치)에 대해 쇼핑몰 별로 쉬운 가격 비교가 가능하며, 해당 정보의 신뢰도가 높은 가격비교 웹 사이트.
 
+* 발표 영상 - wannaKnowMarketPrice/고웹_ppt_4차.mp4
+ 	
+* 데모 영상 - https://www.youtube.com/watch?v=3Q84xx_VQAQ
+
 * 시스템 구조 <br/>
     <img src="https://user-images.githubusercontent.com/44567793/86321498-11dac680-bc74-11ea-92b6-139a9adf797a.png" width="830" height="470">
 
@@ -60,4 +64,5 @@
   
     * 일간 시세 변동<br/>
     ![일간](https://user-images.githubusercontent.com/44567793/86323733-51a3ad00-bc78-11ea-8fb5-14b2eba3c4cc.png)
+    
                  
